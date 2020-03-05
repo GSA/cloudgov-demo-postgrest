@@ -8,12 +8,14 @@ applications:
   - name: ((app_name))
     health-check-type: process
     random-route: true
-    command: DB_URI=${DATABASE_URL} ./env-to-config ./postgrest postgrest.conf
+    command: ./setupdb.py && DB_URI=${DATABASE_URL} ./env-to-config ./postgrest postgrest.conf
     buildpacks:
+    - python_buildpack
     - binary_buildpack
     services:
     - ((app_name))-db        
     env:
-      DB_ANON_ROLE: ((db_anon_role))
+      DB_ANON_ROLE: anonymous
+      DB_ANON_PASSWORD: ((db_anon_password))
       DB_SCHEMA: ((db_schema))
 
