@@ -1,0 +1,19 @@
+---
+# To deploy this manifest: 
+#   1. Copy vars.yml.template to vars.yml and edit in your own values
+#   2. cf create-service aws-rds shared-psql ((app_name))-db
+#   3. cf push --vars-file vars.yml
+
+applications:
+  - name: ((app_name))
+    health-check-type: process
+    random-route: true
+    command: DB_URI=${DATABASE_URL} ./env-to-config ./postgrest postgrest.conf
+    buildpacks:
+    - binary_buildpack
+    services:
+    - ((app_name))-db        
+    env:
+      DB_ANON_ROLE: ((db_anon_role))
+      DB_SCHEMA: ((db_schema))
+
