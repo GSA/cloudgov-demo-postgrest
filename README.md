@@ -2,7 +2,7 @@
 
 This demo shows you how to get a REST API for your CSV data on [cloud.gov](https://cloud.gov) in about 60 seconds. 
 
-ATO not included.
+[ATO](https://atos.open-control.org/steps/#top) not included.
 
 # Trying it out
 
@@ -10,8 +10,9 @@ ATO not included.
 If you haven't already, [set up your cloud.gov account](https://cloud.gov/docs/getting-started/accounts/) and [log in to cloud.gov](https://cloud.gov/docs/getting-started/setup/).
 
 Open a terminal, then clone this repository.
-```
-git clone https://github.com/GSA/cloudgov-demo-postgrest.git
+
+```sh
+~$ git clone https://github.com/GSA/cloudgov-demo-postgrest.git
 ```
 
 (Alternatively, [download a ZIP file](https://codeload.github.com/GSA/cloudgov-demo-postgrest/zip/master) and unzip it to create the `cloudgov-demo-postgrest` folder.)
@@ -19,25 +20,25 @@ git clone https://github.com/GSA/cloudgov-demo-postgrest.git
 Change into that directory.
 
 ```sh
-cd cloudgov-demo-postgrest
+~$ cd cloudgov-demo-postgrest
 ```
 
-
-Copy `vars.yml.template` to `vars.yml`, and run 
+Copy `vars.yml.template` to `vars.yml`, and run the deploy script
 
 ```sh
-./deploy.sh
+~$ cp vars.yml.template vars.yml
+~$ ./deploy.sh
 ```
 
 Once that operation completes, run
 
 ```sh
-cf apps
+~$ cf apps
 ```
 
 You'll see the URL your application was assigned. The output will look like:
 
-```
+```sh
 Getting apps in org sandbox-agencyname / space your.name as your.name@agencyname.gov...
 OK
 
@@ -48,10 +49,10 @@ postgrest   started           1/1         512M     1G     postgrest-vivacious-wo
 You can now run (with your own URL):
 
 ```sh
-curl -s "https://URL/Inspection_Results_School_Food_Service?GradeRecent=eq.C" | jq .
+~$ curl -s "https://{your-app-url}/Inspection_Results_School_Food_Service?GradeRecent=eq.C" | jq .
 ```
 
-You should see a nicely formatted JSON response.
+You should see a nicely formatted JSON response using the awesome [`jq`](https://stedolan.github.io/jq/) utility. To learn more about querying data in PostgREST, [see the docs](https://postgrest.org/en/v3.2/api_reading.html#filtering).
 
 ## Cleaning up the demo
 
@@ -70,16 +71,21 @@ The sample data is in the [`data`](data) directory. You can drop your own `.csv`
 
 You can edit the `init.sh` script in the [`data`](data) directory and go to town. (The default behavior just uses [`csvkit`](https://csvkit.readthedocs.io), which you might find useful.)
 
+Note - before `./deploy.sh` on new data files in the [`data`](data) directory, make sure your csv file is valid and properly formatted.
+
+``sh
+~$ csvclean -n data/myfile.csv
+```
 
 #  DBAs demand answers
 
 ## WHAT IS THIS SORCERY?!
 
-This was all made possible through the magic of [PostgREST](http://postgrest.org)... We're just providing the cloud.gov glue here. With this tech in hand, you're not just a DBA, you're a backend web developer now. Have a look at the PostgREST docs to see what else you can do!
+This was all made possible through the magic of [PostgREST](http://postgrest.org)... We're just providing the cloud.gov glue here. With this tech in hand, you're not just a DBA, you're a backend web developer now. Have a look at the [PostgREST docs](http://postgrest.org/en/v6.0/) to see what else you can do!
 
 ## What about access control?
 
-The `shared-psql` plan in use is a community resources, and does not give you `CREATEUSER` or `CREATEROLE` permissions. You'll need to use the `medium-psql` plan or higher for that.
+The [`shared-psql` plan in use on cloud.gov](https://cloud.gov/docs/services/relational-database/) is a community resources, and does not give you `CREATEUSER` or `CREATEROLE` permissions. You'll need to use the `medium-psql` plan or higher for that.
 
 You can use the [`service-connect` plugin](https://github.com/18F/cf-service-connect) to connect to the DB and create roles by hand, but a better way is to customize `init.sh` to do what you want in a repeatable way. (See the `setup-roles.py` script for an example of how to make DB queries without the `psql` client available.)
 
