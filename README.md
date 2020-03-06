@@ -1,16 +1,101 @@
 # cloudgov-demo-postgrest
 
-## What is this?
+This demo shows you how to get a REST API for your CSV data on [cloud.gov](https://cloud.gov) in about 60 seconds. 
 
-This is a quick demo of how easy it is to get an instance of PostgREST up and running on [cloud.gov](https://cloud.gov). Just copy `vars.yml.template` to `vars.yml`, then run 
+ATO not included.
 
-```sh
-./postgrest-me.sh
+# Trying it out
+
+## Deploying the demo
+If you haven't already, [set up your cloud.gov account](https://cloud.gov/docs/getting-started/accounts/) and [log in to cloud.gov](https://cloud.gov/docs/getting-started/setup/).
+
+Open a terminal, then clone this repository.
+```
+git clone https://github.com/GSA/cloudgov-demo-postgrest.git
 ```
 
-Then visit the route that was generated. (Run `cf app postgrest` to see it again if necessary.)
+(Alternatively, [download a ZIP file](https://codeload.github.com/GSA/cloudgov-demo-postgrest/zip/master) and unzip it to create the `cloudgov-demo-postgrest` folder.)
 
-## Contributing
+Change into that directory.
+
+```sh
+cd cloudgov-demo-postgrest
+```
+
+
+Copy `vars.yml.template` to `vars.yml`, and run 
+
+```sh
+./deploy.sh
+```
+
+Once that operation completes, run
+
+```sh
+cf apps
+```
+
+You'll see the URL your application was assigned. The output will look like:
+
+```
+Getting apps in org sandbox-agencyname / space your.name as your.name@agencyname.gov...
+OK
+
+name        requested state   instances   memory   disk   urls
+postgrest   started           1/1         512M     1G     postgrest-vivacious-wolverine-lu.app.cloud.gov
+```
+
+You can now run (with your own URL):
+
+```sh
+curl -s "https://URL/Inspection_Results_School_Food_Service?GradeRecent=eq.C" | jq .
+```
+
+You should see a nicely formatted JSON response.
+
+## Cleaning up the demo
+
+Run 
+```sh
+./cleanup.sh
+```
+
+# Next steps
+
+## Try using your own data
+
+The sample data is in the [`data`](data) directory. You can drop your own `.csv` files there before running `./deploy.sh`. Each CSV file you put in the directory will be turned into a REST API endpoint. (For example, the filename `myfile.csv` will be available at the REST API endpoint `https://URL/myfile`).
+
+## Try customizing the data import process
+
+You can edit the `init.sh` script in the [`data`](data) directory and go to town. (The default behavior just uses [`csvkit`](https://csvkit.readthedocs.io), which you might find useful.)
+
+
+#  DBAs demand answers
+
+## WHAT IS THIS SORCERY?!
+
+This was all made possible through the magic of [PostgREST](http://postgrest.org)... We're just providing the cloud.gov glue here. With this tech in hand, you're not just a DBA, you're a backend web developer now. Have a look at the PostgREST docs to see what else you can do!
+
+## What about access control?
+
+The `shared-psql` plan in use is a community resources, and does not give you `CREATEUSER` or `CREATEROLE` permissions. You'll need to use the `medium-psql` plan or higher for that.
+
+You can use the [`service-connect` plugin](https://github.com/18F/cf-service-connect) to connect to the DB and create roles by hand, but a better way is to customize `init.sh` to do what you want in a repeatable way. (See the `setup-roles.py` script for an example of how to make DB queries without the `psql` client available.)
+
+## How can I scale this up?
+
+```
+cf scale -i INSTANCES -m MEMORY postgrest
+```
+
+...where `INSTANCES` is the number of web services you want serving requests, and `MEMORY` is the memory allocated for each instance.
+
+## How much does this cost to run? 
+
+It's free to run this demo in your sandbox space. See [cloud.gov pricing](https://cloud.gov/pricing/) if you want to instead host it in a more durable prototyping or production space. (Note that using both PostgREST and cloud.gov is going to save you a ridiculous amount of money on custom app code and compliance, so make sure you're comparing the cost of cloud.gov hosting to the real costs of going another route.)
+
+# Contributing
 
 See [CONTRIBUTING](CONTRIBUTING.md) for additional information.
 
