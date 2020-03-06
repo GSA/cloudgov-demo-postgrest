@@ -4,7 +4,7 @@ The data in the `Inspection_Results_School_Food_Service.csv` file comes from the
 
 You can replace this file with one of your own, or add new `.csv` files in this directory. Each file you put in this directory will be turned into a REST API endpoint when you run `./deploy.sh`. (For example, the filename `myfile.csv` will be available at the REST API endpoint `https://URL/myfile`).
 
-Note - before running `./deploy.sh` on new data files in this directory, make sure your csv file is valid and properly formatted.
+Note - before running `./deploy.sh` on new data files in this directory, make sure your [csv file is valid](https://csvkit.readthedocs.io/en/1.0.2/scripts/csvclean.html) and properly formatted.
 
 ```sh
 ~$ csvclean -n data/myfile.csv
