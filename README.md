@@ -1,6 +1,6 @@
 # cloudgov-demo-postgrest
 
-This demo shows you how to get a REST API for your CSV data on [cloud.gov](https://cloud.gov) in about 60 seconds. 
+This demo shows you how to get a federally-compliant REST API for your CSV data on [cloud.gov](https://cloud.gov) in about 60 seconds. 
 
 [ATO](https://atos.open-control.org/steps/#top) not included.
 
