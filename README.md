@@ -65,17 +65,11 @@ Run
 
 ## Try using your own data
 
-The sample data is in the [`data`](data) directory. You can drop your own `.csv` files there before running `./deploy.sh`. Each CSV file you put in the directory will be turned into a REST API endpoint. (For example, the filename `myfile.csv` will be available at the REST API endpoint `https://URL/myfile`).
+The sample data is in the [`data`](data) directory. You can drop your own `.csv` files there before running `./deploy.sh`. Each file you put in the directory will be turned into a REST API endpoint. (For example, the filename `myfile.csv` will be available at the REST API endpoint `https://{your-app-url}/myfile`).
 
 ## Try customizing the data import process
 
 You can edit the `init.sh` script in the [`data`](data) directory and go to town. (The default behavior just uses [`csvkit`](https://csvkit.readthedocs.io), which you might find useful.)
-
-Note - before `./deploy.sh` on new data files in the [`data`](data) directory, make sure your csv file is valid and properly formatted.
-
-``sh
-~$ csvclean -n data/myfile.csv
-```
 
 #  DBAs demand answers
 
@@ -91,7 +85,7 @@ You can use the [`service-connect` plugin](https://github.com/18F/cf-service-con
 
 ## How can I scale this up?
 
-```
+```sh
 cf scale -i INSTANCES -m MEMORY postgrest
 ```
 
