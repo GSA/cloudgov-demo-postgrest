@@ -15,7 +15,6 @@ except:
 cur = conn.cursor()
 try:
     cur.execute('CREATE USER ' + os.environ['DB_ANON_ROLE'] + ' WITH NOCREATEUSER NOCREATEDB ENCRYPTED PASSWORD ' + os.environ['DB_ANON_PASSWORD'])
-    # TODO: Import from .csv file here!
 except:
     print "Got exception setting up user; likely already exists"
 
