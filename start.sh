@@ -6,7 +6,7 @@ set -e
 export PATH=$PATH:/home/vcap/deps/0/python/bin/
 
 # If there's a csv/import.sh file, run it. Otherwise inspect, create tables, and import data from csv/*.csv
-[ -x ./data/import.sh ] && ./data/import.sh || csvsql --overwrite --db $DATABASE_URL --db-schema $DB_SCHEMA --insert data/*.csv
+[ -x ./data/init.sh ] && ./data/init.sh 
 
 # TODO: Set up explicit anonymous and authenticator roles 
 #   ./setup-roles.py
