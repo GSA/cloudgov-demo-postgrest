@@ -6,6 +6,6 @@ You can replace this file with one of your own, or add new `.csv` files in this 
 
 Note - before running `./deploy.sh` on new data files in this directory, make sure your csv file is valid and properly formatted.
 
-``sh
+```sh
 ~$ csvclean -n data/myfile.csv
 ```
