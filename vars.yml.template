@@ -9,4 +9,4 @@ app_name: postgrest
 db_anon_role: anonymous
 
 # The database schema that you want PostgREST to serve
-db_schema: public
+db_schema: api
