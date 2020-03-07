@@ -6,8 +6,7 @@
 app_name: postgrest
 
 # The role to use for anonymous (unauthenticated) access to the database. 
-# TODO: Provision the role at startup time if it doesn't already exist.
-# db_anon_role: some-user
+db_anon_role: anonymous
 
 # The database schema that you want PostgREST to serve
 db_schema: public

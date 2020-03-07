@@ -18,4 +18,5 @@ applications:
     - ((app_name))-db        
     env:
       DB_SCHEMA: ((db_schema))
+      DB_ANON_ROLE: ((db_anon_role))
 
