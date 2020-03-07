@@ -16,20 +16,21 @@ except:
     print "Unable to connect to database"
     sys.exit(-1)
 
-cur = conn.cursor()
-
 # Do the database setup
-try:
-    # Create the schema
+
+# Create the schema
+with conn, conn.cursor() as cur:
     cur.execute('CREATE SCHEMA IF NOT EXISTS ' + os.environ['DB_SCHEMA'])
 
-    # Create a read-only role to be used for any unauthenticated user
-    cur.execute('CREATE ROLE ' + os.environ['DB_ANON_ROLE'])
-    cur.execute('GRANT USAGE ON SCHEMA ' + os.environ['DB_SCHEMA'] + ' TO ' + os.environ['DB_ANON_ROLE'])
-    cur.execute('REVOKE INSERT, UPDATE, DELETE, TRUNCATE ON ALL TABLES IN SCHEMA ' + os.environ['DB_SCHEMA'] + ' FROM ' + os.environ['DB_ANON_ROLE'])
+try:
+    with conn, conn.cursor() as cur:
+        # Create a read-only role to be used for any unauthenticated user
+        cur.execute('CREATE ROLE ' + os.environ['DB_ANON_ROLE'])
+        cur.execute('GRANT USAGE ON SCHEMA ' + os.environ['DB_SCHEMA'] + ' TO ' + os.environ['DB_ANON_ROLE'])
+        cur.execute('REVOKE INSERT, UPDATE, DELETE, TRUNCATE ON ALL TABLES IN SCHEMA ' + os.environ['DB_SCHEMA'] + ' FROM ' + os.environ['DB_ANON_ROLE'])
 
-    # Enable the connecting user to assume the anonymous role
-    cur.execute('GRANT ' + os.environ['DB_ANON_ROLE'] + ' TO ' + os.environ['DB_USERNAME'])
+        # Enable the connecting user to assume the anonymous role
+        cur.execute('GRANT ' + os.environ['DB_ANON_ROLE'] + ' TO ' + os.environ['DB_USERNAME'])
 
 except:
     print "WARNING: Unable to create role " + os.environ['DB_ANON_ROLE']
@@ -39,7 +40,9 @@ except:
 for sqlfile in sorted(sys.argv[1:]):
     print 'Running ' + sqlfile
     try:
-        cur.execute(open(sqlfile, "r").read())
+        with conn, conn.cursor() as cur:
+            cur.execute(open(sqlfile, "r").read())
     except:
         print 'Got exception running file ' + sqlfile
+
 
