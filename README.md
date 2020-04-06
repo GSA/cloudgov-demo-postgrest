@@ -1,3 +1,7 @@
+## Requirements
+- A [`cloud.gov`](https://cloud.gov) account
+- [`jq`](https://stedolan.github.io/jq/) `brew install jq`
+
 # cloudgov-demo-postgrest
 
 This demo shows you how to get a federally-compliant REST API for your CSV data on [cloud.gov](https://cloud.gov) in about 60 seconds. 
