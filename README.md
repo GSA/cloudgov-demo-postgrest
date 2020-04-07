@@ -79,13 +79,11 @@ You can edit the `init.sh` script in the [`data`](data) directory and go to town
 
 ## WHAT IS THIS SORCERY?!
 
-This was all made possible through the magic of [PostgREST](http://postgrest.org)... We're just providing the cloud.gov glue here. With this tech in hand, you're not just a DBA, you're a backend web developer now. Have a look at the [PostgREST docs](http://postgrest.org/en/v6.0/) to see what else you can do!
+This was all made possible through the magic of [PostgREST](http://postgrest.org)... We're just providing the cloud.gov glue here. With this tech in hand, you're not just a DBA, you're a backend web developer now. Just about every aspect of the API's behavior is controlled by the content of the database. Have a look at [the PostgREST docs](http://postgrest.org/en/v6.0/) to see what else you can do! You can customize your deployment by placing `.sql` files in the `data/` directory. The files will be run in order immediately after the `.csv` files are loaded.
 
 ## What about access control?
 
-The [`shared-psql` plan in use on cloud.gov](https://cloud.gov/docs/services/relational-database/) is a community resources, and does not give you `CREATEUSER` or `CREATEROLE` permissions. You'll need to use the `medium-psql` plan or higher for that.
-
-You can use the [`service-connect` plugin](https://github.com/18F/cf-service-connect) to connect to the DB and create roles by hand, but a better way is to customize `init.sh` to do what you want in a repeatable way. (See the `setup-roles.py` script for an example of how to make DB queries without the `psql` client available.)
+You can't create users in the databse. That's because the `shared-psql` plan in use is a community resource, and does not give you `CREATEUSER` or `CREATEROLE` permissions. You'll need to switch to the `medium-psql` plan or higher for that; we didn't do that for this demo because it costs cloud.gov money to operate those instances.
 
 ## How can I scale this up?
 

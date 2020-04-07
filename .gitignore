@@ -1,3 +1,4 @@
 vars.yml
 postgrest
 env-to-config
+.DS_Store
